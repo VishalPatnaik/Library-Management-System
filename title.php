@@ -1,0 +1,46 @@
+<html>
+<img src="title3.jpg" width="100%">
+<div align="center">
+<?php
+ session_start();
+ 			echo "<h3>";
+if(isset($_POST['submit']))
+{
+  $con=mysql_connect('localhost','root','');
+  mysql_select_db('lms');
+	  if($con === false){
+		die("ERROR: Could not connect. " . mysqli_connect_error());
+	  }
+	  $sbt=$_POST['sbt'];
+  $sql="select bookid,title,author,status from bookdetails  where title='".$sbt."'";
+  if($result = mysql_query($sql)){
+    if(mysql_num_rows($result) >0){
+while($row = mysql_fetch_array($result)){
+                 echo "<b> Book id:</b>  &nbsp" . $row['bookid'] ;
+                echo "  <b>Title:</b>  &nbsp" . $row['title'];
+                echo "  <b>Author:</b>  &nbsp" . $row['author'];
+				echo "<b>Status:</b> &nbsp".$row['status']."<br>";
+      
+        }
+   
+
+        mysql_free_result($result);
+    }
+	 else{
+        echo "<b> No books matching your title were found.</b.";
+	
+		    }
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysql_error($con);
+	
+}
+}
+else
+{
+	unset($sbt);
+}
+			echo "</h3>";
+?>
+<input type="submit" onClick="parent.location='index.php'" value="back to home page">
+</div>
+</html>
